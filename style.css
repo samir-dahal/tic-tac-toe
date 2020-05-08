@@ -1,8 +1,11 @@
+@import url("https://fonts.googleapis.com/css2?family=Poppins&display=swap");
 * {
     margin: 0;
     padding: 0;
     box-sizing: border-box;
     user-select: none;
+    font-family: "Poppins", sans-serif;
+    overflow: hidden;
 }
 .tic-tac-toe {
     height: 100vh;
@@ -10,20 +13,49 @@
     justify-content: center;
     align-items: center;
 }
+
+td[data-cell="0"] {
+    border-left: none;
+    border-top: none;
+}
+td[data-cell="1"] {
+    border-top: none;
+}
+td[data-cell="2"] {
+    border-right: none;
+    border-top: none;
+}
+td[data-cell="3"] {
+    border-left: none;
+}
+td[data-cell="5"] {
+    border-right: none;
+}
+td[data-cell="6"] {
+    border-left: none;
+    border-bottom: none;
+}
+td[data-cell="7"] {
+    border-bottom: none;
+}
+td[data-cell="8"] {
+    border-right: none;
+    border-bottom: none;
+}
 table {
-    border: 3px solid blue;
+    border-collapse: collapse;
 }
 td {
-    border: 1px solid blue;
+    border: 5px solid black;
     width: 100px;
     height: 100px;
     padding: 10px;
-    font-size: 50px;
+    font-size: 40px;
     text-align: center;
     cursor: pointer;
 }
 .overlay {
-    background: black;
+    background: rgba(0, 0, 0, 0.8);
     z-index: 1;
     top: 0;
     height: 100vh;
@@ -33,14 +65,43 @@ td {
     display: none;
     color: white;
 }
-.reset-game {
+.reset-game,
+.reset-score {
     font-size: 30px;
     padding: 10px;
     background: green;
     color: white;
     cursor: pointer;
+    margin: 30px;
+}
+.reset-score {
+    background: orangered;
 }
 p {
     font-size: 30px;
     margin-top: 20px;
+}
+.player1-score {
+    color: lightgreen;
+}
+.player2-score {
+    color: orangered;
+}
+.winner {
+    color: yellow;
+}
+@keyframes blink {
+    from {
+        background: white;
+    }
+    to {
+        background: lightblue;
+    }
+}
+.cell-blink {
+    background: lightblue;
+    animation-name: blink;
+    animation-duration: 0.7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
 }

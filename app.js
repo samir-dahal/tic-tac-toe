@@ -6,8 +6,7 @@ let player_X_score = 0;
 let player_O_score = 0;
 let turn = 0;
 let winner = false;
-let game_over = false;
-//turn +
+let draw = false;
 let players = ['', '', '', '', '', '', '', '', ''];
 const winningSequences = [
     //row sequence
@@ -45,12 +44,9 @@ function currentPlayer() {
 }
 function gameOver() {
     if (turn > 7) {
-        game_over = true;
-        $('table').removeEventListener('click', tic);
-    }
-    if (game_over) {
         $('.game-over').innerHTML = 'Game Over!';
         $('.overlay').style.display = 'block';
+        $('table').removeEventListener('click', tic);
     }
 }
 function tic(e) {
@@ -67,6 +63,8 @@ function tic(e) {
             players[currentCell] = currentPlayer();
         }
     }
+    else
+        return;
     //check if winner / game over
     Winner();
     gameOver();
@@ -81,31 +79,37 @@ function Winner() {
         if (players[cell1] == currentPlayer() &&
             players[cell2] == currentPlayer() &&
             players[cell3] == currentPlayer()) {
-            if (currentPlayer() == 'X')
+            if (currentPlayer() == 'X') {
                 player_X_score++;
-            else
+            }
+            else {
                 player_O_score++;
+            }
+
             $('table').removeEventListener('click', tic);
-            $$('td')[cell1].style.background = 'red';
-            $$('td')[cell2].style.background = 'red';
-            $$('td')[cell3].style.background = 'red';
+            $$('td')[cell1].classList.add('cell-blink');
+            $$('td')[cell2].classList.add('cell-blink');
+            $$('td')[cell3].classList.add('cell-blink');
             winner = true;
         }
         else {
-            $('.winner').innerHTML = 'Draw match!';
+            if (turn > 7) {
+                $('.winner').innerHTML = 'Draw match!';
+                setTimeout(() => $('.overlay').style.display = 'block', 1100);
+            }
         }
-
     })
     if (winner) {
         $('.winner').innerHTML = `Player ${currentPlayer()} won the match!`;
+        $('.game-over').innerHTML = "Game Over!";
         if (currentPlayer() == 'X')
             $('.player1-score').innerHTML = `${currentPlayer()} score = ${player_X_score}`;
         else
             $('.player2-score').innerHTML = `${currentPlayer()} score = ${player_O_score}`;
-        setTimeout(() => $('.overlay').style.display = 'block', 600);
-
+        setTimeout(() => $('.overlay').style.display = 'block', 1100);
     }
 }
+//player's move
 $('table').addEventListener('click', tic);
 
 //reset game
@@ -113,7 +117,7 @@ function resetGame() {
     players = ['', '', '', '', '', '', '', '', ''];
     turn = 0;
     winner = false;
-    game_over = false;
+    draw = false;
     $$('td').forEach(td => {
         td.innerHTML = '';
         td.style.background = null;
@@ -121,6 +125,13 @@ function resetGame() {
 }
 $('.reset-game').onclick = () => {
     $('.overlay').style.display = 'none';
+    $$('td').forEach(td => td.classList.remove('cell-blink')); 800
     $('table').addEventListener('click', tic);
     resetGame();
+}
+$('.reset-score').onclick = () => {
+    player_O_score = 0;
+    player_X_score = 0;
+    $('.player1-score').innerHTML = `X score = ${player_X_score}`;
+    $('.player2-score').innerHTML = `O score = ${player_O_score}`;
 }
