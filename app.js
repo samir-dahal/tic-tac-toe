@@ -45,12 +45,16 @@ function currentPlayer() {
 function gameOver() {
     if (turn > 7) {
         $('.game-over').innerHTML = 'Game Over!';
-        $('.overlay').style.display = 'block';
+        setTimeout(() => $('.overlay').style.display = 'block', 1200);
         $('table').removeEventListener('click', tic);
+    }
+    if (draw) {
+        $('.winner').innerHTML = "Draw Match!";
+        $$('td').forEach(td => td.classList.add('draw-cell-blink'));
     }
 }
 function tic(e) {
-    //if clicked on cell only
+    //if clicked on empty cell only
     if (e.target.tagName == 'TD' &&
         e.target.innerHTML == '') {
         let currentCell = e.target.dataset.cell;
@@ -69,6 +73,11 @@ function tic(e) {
     Winner();
     gameOver();
     turn++;
+    if (!winner && !draw) {
+        $('.player-turn').innerHTML = `Player '${currentPlayer()}', you are up!`;
+    }
+    else
+        $('.player-turn').style.opacity = 0;
 
 }
 function Winner() {
@@ -94,8 +103,7 @@ function Winner() {
         }
         else {
             if (turn > 7) {
-                $('.winner').innerHTML = 'Draw match!';
-                setTimeout(() => $('.overlay').style.display = 'block', 1100);
+                draw = true;
             }
         }
     })
@@ -107,6 +115,9 @@ function Winner() {
         else
             $('.player2-score').innerHTML = `${currentPlayer()} score = ${player_O_score}`;
         setTimeout(() => $('.overlay').style.display = 'block', 1100);
+    }
+    if (draw) {
+        $('.winner').innerHTML = 'Draw match!';
     }
 }
 //player's move
@@ -125,7 +136,10 @@ function resetGame() {
 }
 $('.reset-game').onclick = () => {
     $('.overlay').style.display = 'none';
-    $$('td').forEach(td => td.classList.remove('cell-blink')); 800
+    $$('td').forEach(td => td.classList.remove('cell-blink'));
+    $$('td').forEach(td => td.classList.remove('draw-cell-blink'));
+    $('.player-turn').style.opacity = 1;
+    $('.player-turn').innerHTML = "Player 'X', you are up!";
     $('table').addEventListener('click', tic);
     resetGame();
 }

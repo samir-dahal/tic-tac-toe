@@ -6,12 +6,24 @@
     user-select: none;
     font-family: "Poppins", sans-serif;
     overflow: hidden;
+    letter-spacing: 2px;
+    -webkit-tap-highlight-color: transparent;
+}
+.head,
+.player-turn {
+    text-align: center;
+}
+.player-turn {
+    font-size: 20px;
+    color: blue;
+    font-weight: bolder;
 }
 .tic-tac-toe {
     height: 100vh;
     display: flex;
     justify-content: center;
-    align-items: center;
+    align-items: flex-start;
+    margin-top: 80px;
 }
 
 td[data-cell="0"] {
@@ -98,9 +110,24 @@ p {
         background: lightblue;
     }
 }
+@keyframes draw-cell-blink {
+    from {
+        background: white;
+    }
+    to {
+        background: coral;
+    }
+}
 .cell-blink {
     background: lightblue;
     animation-name: blink;
+    animation-duration: 0.7s;
+    animation-iteration-count: infinite;
+    animation-timing-function: ease-in-out;
+}
+.draw-cell-blink {
+    background: coral;
+    animation-name: draw-cell-blink;
     animation-duration: 0.7s;
     animation-iteration-count: infinite;
     animation-timing-function: ease-in-out;
